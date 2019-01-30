@@ -62,6 +62,9 @@ describe ANSEL::Converter do
       expect(@ansel.convert("\xC7\x00")).to eq 'ß'.force_encoding('utf-8')
       expect(@ansel.convert("\xC8\x00")).to eq '€'.force_encoding('utf-8')
 
+      # ANSEL non-combing characters without trailing NUL
+      expect(@ansel.convert("\xB2")).to eq 'ø'.force_encoding('utf-8')
+
       # ANSEL combining characters
       expect(@ansel.convert("\xE0\x41")).to eq 'Ả'.force_encoding('utf-8')
       expect(@ansel.convert("\xF6\x4C")).to eq 'Ḻ'.force_encoding('utf-8')
@@ -71,6 +74,7 @@ describe ANSEL::Converter do
       expect(@ansel.convert("\xF2\xE3\x41")).to eq 'Ậ'.force_encoding('utf-8')
       expect(@ansel.convert("\xF2\x79")).to eq 'ỵ'.force_encoding('utf-8')
       expect(@ansel.convert("\xF2")).to eq '̣'.force_encoding('utf-8')
+      expect(@ansel.convert("Mel\xB2y")).to eq 'Meløy'.force_encoding('utf-8')
     end
 
     it 'converts full text correctly' do
