@@ -39,7 +39,8 @@ module ANSEL
           end
         else
           output << utf16_to_utf8(ANSI_TO_UTF16_MAP['ERR'])
-          scanner.get_byte if scanner.get_byte.unpack('C')[0] >= 0xE0 # ignore the next byte
+          # ignore the next byte                                      # don't fail if there is no next byte
+          scanner.get_byte if scanner.get_byte.unpack('C')[0] >= 0xE0 rescue nil
         end
       end
 
